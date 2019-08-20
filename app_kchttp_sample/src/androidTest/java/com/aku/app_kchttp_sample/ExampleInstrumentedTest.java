@@ -1,4 +1,4 @@
-package com.aku.aac.kchttp;
+package com.aku.app_kchttp_sample;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.aku.aac.kchttp.test", appContext.getPackageName());
+        assertEquals("com.aku.app_kchttp_sample.test", appContext.getPackageName());
     }
 }

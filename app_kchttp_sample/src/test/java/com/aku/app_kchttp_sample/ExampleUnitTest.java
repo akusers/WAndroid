@@ -1,4 +1,4 @@
-package com.aku.aac.kchttp;
+package com.aku.app_kchttp_sample;
 
 import org.junit.Test;
 

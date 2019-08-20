@@ -1,1 +1,1 @@
-include ':app', ':kchttp', ':vmbase', ':common'
+include ':app', ':kchttp', ':vmbase', ':common', ':app_kchttp_sample'
