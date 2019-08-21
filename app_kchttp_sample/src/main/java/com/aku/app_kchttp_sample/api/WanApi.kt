@@ -11,8 +11,8 @@ import retrofit2.http.Query
  */
 interface WanApi {
 
-    companion object{
-        const val BASE_URL=""
+    companion object {
+        const val BASE_URL = ""
     }
 
     /**
@@ -43,7 +43,8 @@ interface WanApi {
      * 查看某个公众号历史数据
      */
     @GET("wxarticle/list/{id}/{pageNo}/json")
-    suspend fun getWXArticles(@Path("id") id: Int, @Path("pageNo") pageNo: Int): HttpResponse<Page<Article>>
+    suspend fun getWXArticles(@Path("id") id: Int, @Path("pageNo") pageNo: Int)
+            : HttpResponse<Page<Article>>
 
     /**
      * 项目类目列表
