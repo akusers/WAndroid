@@ -24,8 +24,10 @@ interface ApiHandler {
      * 检测code是否可用
      */
     fun <T> isCodeDisabled(resultApi: BaseResult<T>): Boolean {
-        return resultApi.code != 200 &&
-                resultApi.code != 10000
+        return when (resultApi.code) {
+            200, 10000 -> false
+            else -> true
+        }
     }
 
     /**
@@ -60,7 +62,7 @@ interface ApiHandler {
             if (isCodeDisabled(resultApi)) {
                 resultApi.state = RState.ERROR
                 resultApi.msg = resultApi.msgOrDefault
-            }else if(isDataDisabled(resultApi)){
+            } else if (isDataDisabled(resultApi)) {
                 resultApi.state = RState.ERROR
                 resultApi.msg = KcUtils.getString(R.string.kchttp_net_empty_result)
             }

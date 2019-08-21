@@ -1,18 +1,15 @@
 package com.aku.aac.kchttp.ext
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.OnLifecycleEvent
 import com.aku.aac.kchttp.KcHttp
 import com.aku.aac.kchttp.R
 import com.aku.aac.kchttp.core.KcHttpException
 import com.aku.aac.kchttp.core.RState
+import com.aku.aac.kchttp.core.checkResult
+import com.aku.aac.kchttp.core.handleError
 import com.aku.aac.kchttp.data.BaseResult
 import com.aku.aac.kchttp.data.ResultApi
 import com.aku.aac.kchttp.data.ResultError
 import com.aku.aac.kchttp.util.KcUtils
-import kotlinx.coroutines.*
 
 /**
  * 异常捕获

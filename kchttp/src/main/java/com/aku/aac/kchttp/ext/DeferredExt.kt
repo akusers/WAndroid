@@ -3,6 +3,8 @@ package com.aku.aac.kchttp.ext
 import com.aku.aac.kchttp.KcHttp
 import com.aku.aac.kchttp.R
 import com.aku.aac.kchttp.core.ApiErrorCode
+import com.aku.aac.kchttp.core.checkResult
+import com.aku.aac.kchttp.core.handleError
 import com.aku.aac.kchttp.data.BaseResult
 import com.aku.aac.kchttp.util.KcUtils
 import kotlinx.coroutines.Deferred

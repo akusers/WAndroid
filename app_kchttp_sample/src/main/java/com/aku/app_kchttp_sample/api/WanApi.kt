@@ -12,7 +12,7 @@ import retrofit2.http.Query
 interface WanApi {
 
     companion object {
-        const val BASE_URL = ""
+        const val BASE_URL = "https://www.wanandroid.com/"
     }
 
     /**

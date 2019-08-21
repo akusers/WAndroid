@@ -4,8 +4,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
+import com.aku.aac.kchttp.KcHttp
+import com.aku.aac.kchttp.core.handleError
 import com.aku.aac.kchttp.data.BaseResult
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 
 /**
  * @param block 调用Api请求数据的[suspend]方法
@@ -15,12 +20,11 @@ import kotlinx.coroutines.*
  * 在[androidx.appcompat.app.AppCompatActivity]或[androidx.fragment.app.Fragment]中直接使用
  * 不过最好还是不使用此方法，而是使用[androidx.lifecycle.ViewModel]
  */
-@ExperimentalCoroutinesApi
 fun <T> LifecycleOwner.resultUi(
     block: suspend () -> BaseResult<T>,
     uiAction: BaseResult<T>.() -> Unit
 ) {
-    val deferred = GlobalScope.async {
+    val deferred = GlobalScope.async(Dispatchers.IO) {
         val result = catchResult(block)
         withContext(Dispatchers.Main) {
             uiAction.invoke(result)
@@ -33,6 +37,9 @@ fun <T> LifecycleOwner.resultUi(
         }
     }
     deferred.invokeOnCompletion {
+        it?.run {
+            uiAction.invoke(KcHttp.handleError(this))
+        }
         lifecycle.removeObserver(uiLifecycle)
     }
     lifecycle.addObserver(uiLifecycle)

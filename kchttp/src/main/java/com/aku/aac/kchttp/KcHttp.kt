@@ -1,7 +1,5 @@
 package com.aku.aac.kchttp
 
-import com.aku.aac.kchttp.core.ApiHandler
-import com.aku.aac.kchttp.core.KcHttpConfig
 import com.aku.aac.kchttp.core.KcHttpConfig.globalBaseUrl
 import com.aku.aac.kchttp.core.KcHttpConfig.okHttpClientBuilder
 import com.aku.aac.kchttp.core.KcHttpConfig.retrofitBuilder
@@ -11,8 +9,7 @@ import retrofit2.Retrofit
 /**
  * kotlin Coroutine for http
  */
-object KcHttp : ApiHandler by KcHttpConfig.apiHandler {
-
+object KcHttp {
     /**
      * 创建并缓存Api
      */
