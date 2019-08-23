@@ -2,25 +2,24 @@ package com.aku.aac.kchttp.ext
 
 import com.aku.aac.kchttp.KcHttp
 import com.aku.aac.kchttp.R
-import com.aku.aac.kchttp.core.KcHttpException
-import com.aku.aac.kchttp.core.RState
-import com.aku.aac.kchttp.core.checkResult
-import com.aku.aac.kchttp.core.handleError
+import com.aku.aac.kchttp.core.*
 import com.aku.aac.kchttp.data.BaseResult
 import com.aku.aac.kchttp.data.ResultApi
 import com.aku.aac.kchttp.data.ResultError
 import com.aku.aac.kchttp.util.KcUtils
 
-/**
- * 异常捕获
- */
-suspend fun <T> catchResult(block: suspend () -> BaseResult<T>): BaseResult<T> {
-    return try {
-        KcHttp.checkResult(block.invoke())
-    } catch (e: Throwable) {
-        KcHttp.handleError(e)
-    }
-}
+/*********** 数据检测 *********/
+
+fun <T> BaseResult<T>.checkResult(): BaseResult<T> = KcHttpConfig.apiHandler.checkResult(this)
+
+fun <T> Throwable.toBaseResult(): BaseResult<T> = KcHttpConfig.apiHandler.handleError<T>(this)
+
+fun <T> BaseResult<T>.handleResult(): BaseResult<T> = KcHttpConfig.apiHandler.handleResult(this)
+
+val <T> BaseResult<T>.isCodeDisabled: Boolean
+    get() = KcHttpConfig.apiHandler.isCodeDisabled(this)
+val <T> BaseResult<T>.isDataDisabled: Boolean
+    get() = KcHttpConfig.apiHandler.isDataDisabled(this)
 
 /**
  * 获取直接可使用的数据或者抛出异常
@@ -28,10 +27,9 @@ suspend fun <T> catchResult(block: suspend () -> BaseResult<T>): BaseResult<T> {
 val <T> BaseResult<T>.valueOrThrow: T
     @Throws(KcHttpException::class)
     get() {
-        KcHttp.checkResult(this)
+        checkResult()
         return data!!
     }
-
 /**
  * 错误信息或者为空的错误信息
  */
@@ -39,6 +37,19 @@ val BaseResult<*>.msgOrDefault: String
     get() = if (msg.isNotEmpty()) {
         msg
     } else KcUtils.getString(R.string.kchttp_net_empty_msg)
+
+/*********** 操作 *********/
+/**
+ * 异常捕获
+ */
+suspend fun <T> catchResult(block: suspend () -> BaseResult<T>): BaseResult<T> {
+    return try {
+        block.invoke().checkResult()
+    } catch (e: Throwable) {
+        e.toBaseResult()
+    }
+}
+
 
 /**
  * @author Zsc

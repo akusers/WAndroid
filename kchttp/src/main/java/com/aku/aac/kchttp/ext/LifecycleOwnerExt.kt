@@ -4,8 +4,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
-import com.aku.aac.kchttp.KcHttp
-import com.aku.aac.kchttp.core.handleError
 import com.aku.aac.kchttp.data.BaseResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -38,7 +36,7 @@ fun <T> LifecycleOwner.resultUi(
     }
     deferred.invokeOnCompletion {
         it?.run {
-            uiAction.invoke(KcHttp.handleError(this))
+            uiAction.invoke(toBaseResult())
         }
         lifecycle.removeObserver(uiLifecycle)
     }

@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
             resultUi({
                 api.getBanner()
             }) {
-                logD(this)
                 tvContent.text = toJson()
             }
         }
