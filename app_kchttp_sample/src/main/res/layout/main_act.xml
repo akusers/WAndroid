@@ -13,19 +13,14 @@
             android:layout_height="wrap_content"
             android:text="请求结果"/>
     <Button
-            android:id="@+id/btnAct"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="直接在Activity请求"/>
-    <Button
             android:id="@+id/btnTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="test"/>
+            android:text="简单处理"/>
     <Button
-            android:id="@+id/btnTestError"
+            android:id="@+id/btnTestCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="testError"/>
+            android:text="带可取消的弹窗的处理"/>
 
 </LinearLayout>

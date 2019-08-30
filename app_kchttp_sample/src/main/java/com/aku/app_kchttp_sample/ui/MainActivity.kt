@@ -1,5 +1,7 @@
 package com.aku.app_kchttp_sample.ui
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +10,6 @@ import com.aku.aac.kchttp.core.ApiHandler
 import com.aku.aac.kchttp.core.KcHttpConfig
 import com.aku.aac.kchttp.data.BaseResult
 import com.aku.aac.kchttp.ext.requestEasy
-import com.aku.aac.kchttp.ext.resultUi
 import com.aku.app_kchttp_sample.R
 import com.aku.app_kchttp_sample.api.WanApi
 import com.aku.app_kchttp_sample.data.Banner
@@ -16,7 +17,9 @@ import com.aku.common.util.bindDialog
 import com.aku.common.util.toJson
 import com.blankj.utilcode.util.LogUtils
 import kotlinx.android.synthetic.main.main_act.*
-import kotlinx.coroutines.delay
+import kotlinx.android.synthetic.main.progress_dialog.*
+import kotlinx.android.synthetic.main.progress_dialog.view.*
+import kotlinx.coroutines.*
 import okhttp3.logging.HttpLoggingInterceptor
 
 class MainActivity : AppCompatActivity() {
@@ -33,51 +36,54 @@ class MainActivity : AppCompatActivity() {
         KcHttp.createApi<WanApi>(WanApi.BASE_URL)
     }
 
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_act)
-        btnAct.setOnClickListener {
-            resultUi({
-                api.getBanner()
-            }) {
-                tvContent.text = toJson()
-            }
-        }
+
         btnTest.setOnClickListener {
             requestEasy<List<Banner>> {
-                loadData {
-                    api.getBanner()
-                }
-                onSuccess {
-                    tvContent.text = "Easy:${toJson()}"
-                    LogUtils.d("Success:${toJson()}")
-                }
-                onError {
-                    LogUtils.d("Error:${toJson()}")
-                }
+                loadData { api.getBanner() }
+                onSuccess { tvContent.text = "Easy:${toJson()}" }
+                onError { tvContent.text = "Easy:${toJson()}" }
             }
         }
-        btnTestError.setOnClickListener {
+        btnTestCancel.setOnClickListener {
             requestEasy<List<Banner>> {
-                //绑定的dialog，如果用progress效果更好，不过最好是直接使用DialogFragment来加载请求
-                val dialog by lazy {
-                    AlertDialog.Builder(this@MainActivity)
-                        .setTitle("请求中")
-                        .setNegativeButton("取消", null)
-                        .show()
-                }
+                //最好是直接使用DialogFragment来加载请求
+                bindDialog { getCancelDialog() }
                 loadData {
-                    //延迟1.5s 避免加载太快看不到效果
-                    delay(1500)
+                    //延迟1.5s 避免加载太快看不到效果,模拟连续加载
+                    delay(500)
+                    withContext(Dispatchers.Main){
+                        dialog!!.tvMsg.text="loading......1"
+                    }
+                    delay(500)
+                    withContext(Dispatchers.Main){
+                        dialog!!.tvMsg.text="loading......2"
+                    }
+                    delay(500)
+                    withContext(Dispatchers.Main){
+                        dialog!!.tvMsg.text="loading......3"
+                    }
                     api.getBanner()
                 }
                 onStart {
-                    job.bindDialog(dialog)
+                    dialog?.run {
+                        show()
+                        job.bindDialog(this)
+                        GlobalScope.launch(Dispatchers.Main) {
+                            //延迟一段时间再设置取消请求按钮可用
+                            delay(600)
+                            if (isShowing) {
+                                btnCancel.isEnabled = true
+                            }
+                        }
+                    }
                     LogUtils.d("onStart")
                 }
-                onComplete {
-                    LogUtils.d("onComplete")
-                }
+                onComplete { LogUtils.d("onComplete") }
                 onCancel { tvContent.text = "onCancel:${toJson()}" }
                 onSuccess {
                     tvContent.text = "Success:${toJson()}"
@@ -89,6 +95,19 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
+
+    private fun getCancelDialog(): Dialog {
+        val view = layoutInflater.inflate(R.layout.progress_dialog, null)
+        return AlertDialog.Builder(this@MainActivity)
+            .setView(view)
+            .setCancelable(false)
+            .create()
+            .apply {
+                view.btnCancel.setOnClickListener {
+                    dismiss()
+                }
+            }
+    }
+
 }
