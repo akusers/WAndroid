@@ -7,7 +7,7 @@ import kotlinx.coroutines.Job
  * 绑定dialog,dialog消失则取消
  */
 fun Job.bindDialog(dialog: Dialog) {
-    dialog.setOnCancelListener {
+    dialog.setOnDismissListener {
         cancel()
     }
     withDialog(dialog)

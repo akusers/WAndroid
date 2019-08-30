@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import com.aku.aac.kchttp.data.BaseResult
+import com.aku.aac.kchttp.request.AndroidKcRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -43,3 +44,11 @@ fun <T> LifecycleOwner.resultUi(
     lifecycle.addObserver(uiLifecycle)
     deferred.start()
 }
+
+fun <T> LifecycleOwner.requestEasy(init: AndroidKcRequest<T>.() -> Unit): AndroidKcRequest<T> {
+    return AndroidKcRequest<T>(this).apply {
+        init()
+        request()
+    }
+}
+

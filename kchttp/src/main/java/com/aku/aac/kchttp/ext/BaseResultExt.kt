@@ -1,8 +1,9 @@
 package com.aku.aac.kchttp.ext
 
-import com.aku.aac.kchttp.KcHttp
 import com.aku.aac.kchttp.R
-import com.aku.aac.kchttp.core.*
+import com.aku.aac.kchttp.core.KcHttpConfig
+import com.aku.aac.kchttp.core.KcHttpException
+import com.aku.aac.kchttp.core.RState
 import com.aku.aac.kchttp.data.BaseResult
 import com.aku.aac.kchttp.data.ResultApi
 import com.aku.aac.kchttp.data.ResultError
@@ -26,10 +27,7 @@ val <T> BaseResult<T>.isDataDisabled: Boolean
  */
 val <T> BaseResult<T>.valueOrThrow: T
     @Throws(KcHttpException::class)
-    get() {
-        checkResult()
-        return data!!
-    }
+    get() = checkResult().data!!
 /**
  * 错误信息或者为空的错误信息
  */

@@ -17,5 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="直接在Activity请求"/>
+    <Button
+            android:id="@+id/btnTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="test"/>
+    <Button
+            android:id="@+id/btnTestError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="testError"/>
 
 </LinearLayout>
