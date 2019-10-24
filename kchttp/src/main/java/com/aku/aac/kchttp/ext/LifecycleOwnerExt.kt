@@ -1,15 +1,7 @@
 package com.aku.aac.kchttp.ext
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.OnLifecycleEvent
-import com.aku.aac.kchttp.data.BaseResult
 import com.aku.aac.kchttp.request.KcRequest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
 
 /**
  *
