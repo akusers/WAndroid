@@ -9,11 +9,11 @@ import com.aku.aac.kchttp.KcHttp
 import com.aku.aac.kchttp.core.ApiHandler
 import com.aku.aac.kchttp.core.KcHttpConfig
 import com.aku.aac.kchttp.data.BaseResult
+import com.aku.aac.kchttp.ext.bindDialog
 import com.aku.aac.kchttp.ext.requestEasy
 import com.aku.app_kchttp_sample.R
 import com.aku.app_kchttp_sample.api.WanApi
 import com.aku.app_kchttp_sample.data.Banner
-import com.aku.common.util.bindDialog
 import com.aku.common.util.toJson
 import com.blankj.utilcode.util.LogUtils
 import kotlinx.android.synthetic.main.main_act.*
