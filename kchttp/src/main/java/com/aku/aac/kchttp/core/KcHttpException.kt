@@ -7,10 +7,5 @@ package com.aku.aac.kchttp.core
  */
 class KcHttpException(
     val code: Int,
-    msg: String
-) : RuntimeException(msg) {
-
     override val message: String
-        get() = this.message
-
-}
+) : RuntimeException(message)

@@ -10,26 +10,34 @@ import com.aku.aac.kchttp.data.ResultError
 import com.aku.aac.kchttp.ext.*
 import kotlinx.coroutines.*
 
+/**
+ * 在 LifecycleOwner 中发起网络请求
+ * [com.aku.aac.kchttp.ext.requestEasy]
+ */
 class KcRequest<T>(private val owner: LifecycleOwner) {
 
-    //加载数据的异步请求
+    /** 加载数据的异步请求 */
     private lateinit var data: suspend () -> BaseResult<T>
-    //加载开始的操作
+    /** 加载开始的操作 */
     private var start: (() -> Unit)? = null
-    //加载成功的操作
+    /** 加载成功的操作 */
     private var success: (BaseResult<T>.() -> Unit)? = null
-    //加载失败的操作
+    /** 加载失败的操作 */
     private var error: (ResultError.() -> Unit)? = null
-    //加载取消的操作
+    /** 加载取消的操作 */
     private var cancel: (ResultError.() -> Unit)? = null
-    //加载完成的操作
+    /** 加载完成的操作 */
     private var complete: (() -> Unit)? = null
-
-    //加载时的弹窗
+    /** 加载时的弹窗 */
     var dialog: Dialog? = null
 
+    /**
+     * 绑定一个已显示的dialog(dialog消失则请求取消)
+     */
     fun bindDialog(dialogBuild: () -> Dialog) {
-        dialog = dialogBuild.invoke()
+        dialog = dialogBuild.invoke().apply {
+            job.bindDialog(this)
+        }
     }
 
     fun loadData(load: suspend () -> BaseResult<T>) {
@@ -62,6 +70,9 @@ class KcRequest<T>(private val owner: LifecycleOwner) {
         doCancel { cancel?.invoke(this) }
     }
 
+    /**
+     * 请求的配置
+     */
     val job: Job by lazy {
         GlobalScope.async(Dispatchers.IO) {
             launch(Dispatchers.Main) {
@@ -73,7 +84,9 @@ class KcRequest<T>(private val owner: LifecycleOwner) {
             }
         }
     }
-
+    /**
+     * 请求的执行
+     */
     fun request() {
         val uiLifecycle = object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
