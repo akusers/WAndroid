@@ -12,7 +12,9 @@ import com.aku.aac.kchttp.data.BaseResult
 import com.aku.aac.kchttp.ext.requestEasy
 import com.aku.app_kchttp_sample.R
 import com.aku.app_kchttp_sample.api.WanApi
+import com.aku.app_kchttp_sample.api.api
 import com.aku.app_kchttp_sample.data.Banner
+import com.aku.app_kchttp_sample.ui.vmtest.VmTestActivity
 import com.aku.common.util.toJson
 import com.blankj.utilcode.util.LogUtils
 import kotlinx.android.synthetic.main.main_act.*
@@ -20,21 +22,9 @@ import kotlinx.android.synthetic.main.progress_dialog.*
 import kotlinx.android.synthetic.main.progress_dialog.view.*
 import kotlinx.coroutines.*
 import okhttp3.logging.HttpLoggingInterceptor
+import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
-
-    private val api by lazy {
-        KcHttpConfig.apiHandler = object : ApiHandler {
-            override fun <T> isCodeDisabled(resultApi: BaseResult<T>): Boolean {
-                return resultApi.code != 0 && super.isCodeDisabled(resultApi)
-            }
-        }
-        KcHttpConfig.okHttpClientBuilder.addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        })
-        KcHttp.createApi<WanApi>(WanApi.BASE_URL)
-    }
-
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +82,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        btnVmTest.setOnClickListener {
+            startActivity<VmTestActivity>()
+        }
     }
 
     private fun getCancelDialog(): Dialog {
@@ -102,7 +95,7 @@ class MainActivity : AppCompatActivity() {
             .show()
             .apply {
                 val lp = window?.attributes!!
-                lp.width = 480
+                lp.width = 600
                 window!!.attributes = lp
                 view.btnCancel.setOnClickListener {
                     dismiss()
