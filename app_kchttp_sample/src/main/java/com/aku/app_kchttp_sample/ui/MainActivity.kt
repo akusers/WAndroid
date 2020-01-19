@@ -9,7 +9,6 @@ import com.aku.aac.kchttp.KcHttp
 import com.aku.aac.kchttp.core.ApiHandler
 import com.aku.aac.kchttp.core.KcHttpConfig
 import com.aku.aac.kchttp.data.BaseResult
-import com.aku.aac.kchttp.ext.bindDialog
 import com.aku.aac.kchttp.ext.requestEasy
 import com.aku.app_kchttp_sample.R
 import com.aku.app_kchttp_sample.api.WanApi
@@ -56,23 +55,21 @@ class MainActivity : AppCompatActivity() {
                 loadData {
                     //延迟1.5s 避免加载太快看不到效果,模拟连续加载
                     delay(500)
-                    withContext(Dispatchers.Main){
-                        dialog!!.tvMsg.text="loading......1"
+                    withContext(Dispatchers.Main) {
+                        dialog!!.tvMsg.text = "loading......1"
                     }
                     delay(500)
-                    withContext(Dispatchers.Main){
-                        dialog!!.tvMsg.text="loading......2"
+                    withContext(Dispatchers.Main) {
+                        dialog!!.tvMsg.text = "loading......2"
                     }
                     delay(500)
-                    withContext(Dispatchers.Main){
-                        dialog!!.tvMsg.text="loading......3"
+                    withContext(Dispatchers.Main) {
+                        dialog!!.tvMsg.text = "loading......3"
                     }
                     api.getBanner()
                 }
                 onStart {
                     dialog?.run {
-                        show()
-                        job.bindDialog(this)
                         GlobalScope.launch(Dispatchers.Main) {
                             //延迟一段时间再设置取消请求按钮可用
                             delay(600)
@@ -102,8 +99,11 @@ class MainActivity : AppCompatActivity() {
         return AlertDialog.Builder(this@MainActivity)
             .setView(view)
             .setCancelable(false)
-            .create()
+            .show()
             .apply {
+                val lp = window?.attributes!!
+                lp.width = 480
+                window!!.attributes = lp
                 view.btnCancel.setOnClickListener {
                     dismiss()
                 }
