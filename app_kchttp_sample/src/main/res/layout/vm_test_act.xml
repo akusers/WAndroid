@@ -3,11 +3,11 @@
 
     <data>
 
-        <import type="com.aku.app_kchttp_sample.bindadapter.JsonHelper" />
+        <import type="com.zsc.app_kchttp_sample.bindadapter.JsonHelper" />
 
         <variable
                 name="vm"
-                type="com.aku.app_kchttp_sample.ui.vmtest.VmTestViewModel" />
+                type="com.zsc.app_kchttp_sample.ui.vmtest.VmTestViewModel" />
 
     </data>
 

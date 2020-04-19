@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.aku.aac.kchttp">
+          package="com.zsc.aac.kchttp">
 
     <application>
         <provider
-                android:name=".util.KcFileProvider"
+                android:name="com.zsc.aac.kchttp.util.KcFileProvider"
                 android:authorities="${applicationId}.kchttp.provider"
                 android:exported="false"
                 android:grantUriPermissions="true"
