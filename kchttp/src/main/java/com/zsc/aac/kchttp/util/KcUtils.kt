@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import androidx.annotation.StringRes
 
 /**
  * @author Zsc
@@ -41,7 +42,7 @@ object KcUtils {
     /**
      * 使用资源文件
      */
-    fun getString(id: Int): String {
+    fun getString(@StringRes id: Int): String {
         return sApplication.getString(id)
     }
 
