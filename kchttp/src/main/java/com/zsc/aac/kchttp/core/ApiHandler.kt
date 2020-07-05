@@ -104,13 +104,13 @@ interface ApiHandler {
             )
             is SocketTimeoutException -> createErrorResult(
                 ApiErrorCode.TIME_OUT,
-                KcUtils.getString(R.string.kchttp_net_504)
+                KcUtils.getString(R.string.kchttp_net_time_out)
             )
             is JsonParseException,
             is JSONException,
             is ParseException -> createErrorResult(
                 ApiErrorCode.PARSE_ERROR,
-                KcUtils.getString(R.string.kchttp_net_504)
+                KcUtils.getString(R.string.kchttp_net_parse_error)
             )
             is ConnectException -> createErrorResult(
                 ApiErrorCode.CONNECT_ERROR,

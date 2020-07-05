@@ -20,7 +20,7 @@ object ApiErrorCode {
     const val PARSE_ERROR = 1002
     //连接异常
     const val CONNECT_ERROR = 1003
-
+    //返回结果的data为null
     const val RESULT_IS_NULL = 1004
 
 }
